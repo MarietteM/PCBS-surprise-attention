@@ -43,7 +43,7 @@ To begin press the space bar"""
 
 
 
-#################################### CREATING A TRIAL FUNCTION ####################################
+################################### CREATING A TRIAL FUNCTION ###################################
 def trial_targetcolor(targetcolor, canvas1, canvas2, canvas3):
     ### FIXATION CROSS ###
     fixcross = stimuli.FixCross()
