@@ -9,16 +9,16 @@ The current project is based on the work of Gernot Horstmann (2002). The study i
 **Table of Contents**
 
 - [PCBS: Testing the Surprise-Attention Hypothesis](#pcbs:-testing-the-surprise-attention-hypothesis)
-    - [Methods](##methods)
-        - [Initializing Experiment and Preparing Presets](###initializing-experiment-and-preparing-presets)
-    	- [Creating Trial Function](###creating-trial-function)
-    	- [Creating Stimuli](###Stimuli)
-    	- [Creating Trial Structure](###trial-structure)
-    	- [Creating Expyriment Trial](###creating-Expyriment-Trial)
-    - [Experiment](##experiment)
-    - [Future Directions](##future-directions)
-    - [Class Reflection](##class-reflection)
-    - [Reference](##reference)
+    - [Methods](#methods)
+        - [Initializing Experiment and Preparing Presets](#initializing-experiment-and-preparing-presets)
+    	- [Creating Trial Function](#creating-trial-function)
+    	- [Creating Stimuli](#Stimuli)
+    	- [Creating Trial Structure](#trial-structure)
+    	- [Creating Expyriment Trial](#creating-Expyriment-Trial)
+    - [Experiment](#experiment)
+    - [Future Directions](#future-directions)
+    - [Class Reflection](#class-reflection)
+    - [Reference](#reference)
 
 <!-- markdown-toc end -->
 
