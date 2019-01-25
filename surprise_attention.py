@@ -7,6 +7,7 @@ An experiment to assess the surprise-attention-hypothesis
 #%%
 import expyriment
 from expyriment import design, control, stimuli, io, misc
+from expyriment.misc import constants
 import numpy as np
 import random
 
@@ -27,10 +28,23 @@ canvas2 = stimuli.Canvas(screensize)
 canvas3 = stimuli.Canvas(screensize)
 
 
-### INSTRUCTIONS ###          ##need to make instructions better...they're not clear rn
-instructions = """after every cross, you will see 12 squares displayed 
-in the form of a clock, you will need to respond, using the keys marked below,
-whether the letter sequence contains an H or a U. Press space to continue. """
+### INSTRUCTIONS ###    ##need to make instructions better...they're not clear rn
+practiceinstructions = """ For this experiment, you will first see a cross, followed by a display of 12 squares 
+in the form of a clock. There will be a letter on each square. Your task is to determine whether there was an "H" 
+or "U" among those letters. You will respond with the left and right keys, marked with "H" and "U" correspondingly.
+
+Let's do some practice trials!
+
+To begin press the space bar"""
+
+expinstructions = """We will now begin the actual experiment. As a reminder:
+
+    You will first see a cross, followed by a display of 12 squares 
+in the form of a clock. There will be a letter on each square. Your task is to determine whether there was an "H" 
+or "U" among those letters. You will respond with the left and right keys, marked with "H" and "U" correspondingly.
+
+To begin press the space bar"""
+
 
 
 #################################### CREATING A TRIAL FUNCTION ####################################
@@ -72,11 +86,25 @@ def trial_targetcolor(targetcolor, canvas1, canvas2, canvas3):
     canvas2.present()
     exp.clock.wait(86)
     canvas3.present()
-    exp.keyboard.wait()
+    key, rt = exp.keyboard.wait([constants.K_LEFT, constants.K_RIGHT])
     trial = design.Trial()
-    trial.set_factor("Position",factor_position)
+    trial.set_factor("Target Position",factor_position)
     trial.set_factor("Target Letter", str(targetletters[ranHU]))
-    trial.set_factor("Target Color", str(targetcolor))
+    trial.set_factor("Response", key)
+    trial.set_factor("Reaction Time", rt)
+    ##### Setting Target Color Factor --> red vs. green #####
+    if targetcolor == (255, 0, 0):
+        trial.set_factor("Target Color", "red")        
+    elif targetcolor == (0, 255, 0):
+        trial.set_factor("Target Color", "green")   
+        
+    ###### Setting Accuracy Factor --> hit vs. miss #####
+    if key == 276 and str(targetletters[ranHU]) == 'H':
+        trial.set_factor("Accuracy", "hit")
+    elif key == 275 and str(targetletters[ranHU]) == 'U': 
+        trial.set_factor("Accuracy", "hit")
+    else:
+        trial.set_factor("Accuracy", "miss")
     return trial
 
     
@@ -88,23 +116,34 @@ def trial_targetcolor(targetcolor, canvas1, canvas2, canvas3):
 
 #################################### STARTING EXPERIMENT ####################################
 expyriment.control.start(skip_ready_screen = True)
-exp.data_variable_names = ["Position", "Target Letter", "Target Color"]
+#stimuli.TextScreen('Instructions', instructions).present()
+#exp.keyboard.wait(constants.K_SPACE)
+exp.data_variable_names = ["Target_Position", "Target_Color", "Target_Letter", "Response", "Reaction Time", "Block", "Accuracy"]
 N_trials_block, N_blocks = 108, 2
 
-###PRESENTING STIMULI###
-stimuli.TextScreen('Experiment 1', instructions).present()
-exp.keyboard.wait(expyriment.misc.constants.K_SPACE)
 
-for block in range(N_blocks):#creating 2 blocks and then 
-    COLOR = [RED, GREEN]
-    #adding 108 trials per block
-    for trials in range(2): #creating 12 practice trials per block
-        trial = trial_targetcolor(COLOR[block], canvas1, canvas2, canvas3)
-        exp.data.add([trial.get_factor("Position"),trial.get_factor("Target Color"),trial.get_factor("Target Letter")])
+###PRESENTING STIMULI IN 2 BLOCKS###
 
-                
-    
-expyriment.control.end()
+for block in range(3):#creating 2 blocks and then
+    if block<2:
+        INSTRUCTIONS = [practiceinstructions,expinstructions]
+        stimuli.TextScreen('Instructions', INSTRUCTIONS[block]).present()
+        exp.keyboard.wait(constants.K_SPACE)
+    COLOR = [RED, RED, GREEN]
+    trial = trial_targetcolor(COLOR[block], canvas1, canvas2, canvas3)
+    if block == 0:
+        for trials in range(1): #creating 12 practice trials per block
+            trial = trial_targetcolor(COLOR[block], canvas1, canvas2, canvas3)
+            trial.set_factor("Block", "Practice")
+            exp.data.add([trial.get_factor("Target Position"),trial.get_factor("Target Color"),trial.get_factor("Target Letter"), trial.get_factor("Response"),trial.get_factor("Reaction Time"), trial.get_factor("Block"),trial.get_factor("Accuracy")])
+    else:
+        for trials in range(2): #creating 12 practice trials per block
+            trial = trial_targetcolor(COLOR[block], canvas1, canvas2, canvas3)
+            trial.set_factor("Block", "Block " + str(block))
+            exp.data.add([trial.get_factor("Target Position"),trial.get_factor("Target Color"),trial.get_factor("Target Letter"), trial.get_factor("Response"),trial.get_factor("Reaction Time"), trial.get_factor("Block"),trial.get_factor("Accuracy")])
+
+
+expyriment.control.end(goodbye_text = "Thank you for participating!", confirmation = False, goodbye_delay = 1000)
 
 #To-do
 ##now need to have it so that the last canvas--squares w/o text AND WAIT!!!
