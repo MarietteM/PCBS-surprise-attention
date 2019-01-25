@@ -28,7 +28,7 @@ canvas2 = stimuli.Canvas(screensize)
 canvas3 = stimuli.Canvas(screensize)
 
 
-### INSTRUCTIONS ###    ##need to make instructions better...they're not clear rn
+### INSTRUCTIONS ###  
 practiceinstructions = """ For this experiment, you will first see a cross, followed by a display of 12 squares in the form of a clock.
 There will be a letter on each square. Your task is to determine whether there was an "H" or "U" among those letters. 
 You will respond with the left and right keys, marked with "H" and "U" correspondingly.
@@ -107,11 +107,12 @@ def trial_targetcolor(targetcolor, canvas1, canvas2, canvas3):
 
 #################################### STARTING EXPERIMENT ####################################
 expyriment.control.start(skip_ready_screen = True)
-exp.data_variable_names = ["Target_Position", "Target_Color", "Target_Letter", "Response", "Reaction Time", "Block", "Accuracy"]
-N_trials_block, N_blocks = 108, 2
+exp.data_variable_names = ["Target_Position", "Target Color", "Target Letter", "Response", "Reaction Time", "Block", "Accuracy"]
+N_practice = 12
+N_experiment = 48
 
 
-for block in range(3): ### Three Blocks: Practice, Part1: Conjunction Search Segments, Part 2: Surprise Trials ###
+for block in range(3): ### Three Blocks: Practice, Part1: Conjunction Search Segment, Part 2: Feature Search Segment ###
     if block<2:
         INSTRUCTIONS = [practiceinstructions,expinstructions]
         stimuli.TextScreen('Instructions', INSTRUCTIONS[block]).present()
@@ -119,12 +120,12 @@ for block in range(3): ### Three Blocks: Practice, Part1: Conjunction Search Seg
     COLOR = [RED, RED, GREEN]
     trial = trial_targetcolor(COLOR[block], canvas1, canvas2, canvas3)
     if block == 0:
-        for trials in range(12): #creating 12 practice trials per block
+        for trials in range(N_practice): #creating 12 practice trials per block
             trial = trial_targetcolor(COLOR[block], canvas1, canvas2, canvas3)
             trial.set_factor("Block", "Practice")
             exp.data.add([trial.get_factor("Target Position"),trial.get_factor("Target Color"),trial.get_factor("Target Letter"), trial.get_factor("Response"),trial.get_factor("Reaction Time"), trial.get_factor("Block"),trial.get_factor("Accuracy")])
     else:
-        for trials in range(48): #creating 48 trials per experimental blocks [Conjunction Search Segment; Surprise Trials]
+        for trials in range(N_experiment): #creating 48 trials per experimental blocks [Conjunction Search Segment; Feature Search segment]
             trial = trial_targetcolor(COLOR[block], canvas1, canvas2, canvas3)
             trial.set_factor("Block", "Block " + str(block))
             exp.data.add([trial.get_factor("Target Position"),trial.get_factor("Target Color"),trial.get_factor("Target Letter"), trial.get_factor("Response"),trial.get_factor("Reaction Time"), trial.get_factor("Block"),trial.get_factor("Accuracy")])
