@@ -1,15 +1,31 @@
-# PCBS-surprise-attention
-Projet PCBS/ AE
-
 # PCBS: Testing the Surprise-Attention Hypothesis
 
 ## Introduction
 
-The current project is based on the work of Gernot Horstmann (2014). The study investigates the surprise attention hypothesis, which postulates that unexpected events induce surprise in subjects, which in turn elicits attention towards this surprising event. They investigated whether surprising color singletons capture attention. They measured attention in terms of target stimulus detection; a greater proportion of stimulus detection indicates a better caption of attention. The study presents a series of 12 colored squares appearing on the 12 clock positions of a circle. On 11 of the squares, distractor letters are present, on 1 of the squares, the target is presented. For the first 48 experimental trials (after a practice session of 12 trials), all 12 squares are the same color(i.e. red). These trials are denoted as 'Conjunction search segment'. Beginning from the 49th trial, the target square is green, thus possibly inducing surprise. The 49th trial is referred to as the 'surprise trial', and the 50th trial onwards is referred to as 'Featured search segment'. In Gernot's study, they found that the surprise trial yields a 90 percent correct detection rate among participants, with following feature search segment trials eliciting equally if not better correction detection rates. 
+The current project is based on the work of Gernot Horstmann (2002). The study investigates the surprise attention hypothesis, which postulates that unexpected events induce surprise in subjects, which in turn elicits attention towards this surprising event. They investigated whether surprising color singletons capture attention. They measured attention in terms of target stimulus detection; a greater proportion of stimulus detection indicates a better caption of attention. The study presents a series of 12 colored squares appearing on the 12 clock positions of a circle. On 11 of the squares, distractor letters are present, on 1 of the squares, the target is presented. For the first 48 experimental trials (after a practice session of 12 trials), all 12 squares are the same color(i.e. red). These trials are denoted as 'Conjunction search segment'. Beginning from the 49th trial, the target square is green, thus possibly inducing surprise. The 49th trial is referred to as the 'surprise trial', and the 50th trial onwards is referred to as 'Featured search segment'. In Gernot's study, they found that the surprise trial yields a 90 percent correct detection rate among participants, with following feature search segment trials eliciting equally if not better correction detection rates. 
 
-##Methods
 
-###Initializing Experiment and Preparing Presets
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [PCBS: Testing the Surprise-Attention Hypothesis](#PCBS:-Testing-the-Surprise-Attention-Hypothesis)
+    - [Methods](##Methods)
+        - [Initializing Experiment and Preparing Presets](###Initializing-Experiment-and-Preparing-Presets)
+    	- [Creating Trial Function](###Creating-Trial-Function)
+    	- [Creating Stimuli](###Stimuli)
+    	- [Creating Trial Structure](###Trial-Structure)
+    	- [Creating Expyriment Trial](###Creating-Expyriment-Trial)
+    - [Starting Experiment](##starting-experiment)
+    - [Experiment](##experiment)
+    - [Future Directions](##future-directions)
+    - [Class Reflection](##Class-Reflection)
+    - [Reference](##reference)
+
+<!-- markdown-toc end -->
+
+## Methods
+
+### Initializing Experiment and Preparing Presets
 To begin, I imported relevant modules from expyriment, numpy, and random. Also, knowing that I would be using the colors, red, green and black, I defined said variables. I also defined two instruction variables, one to be presented before practice trials and one to be presented before experimental trials.
 
 ```
@@ -50,7 +66,7 @@ You will respond with the left and right keys, marked with "H" and "U" correspon
 To begin press the space bar"""
 
 ```
-##Trial Function
+### Creating Trial Function
 I defined the following function to display my stimuli and record responses from participants. In following sections, I will detail the various aspects of this function. 
 
 ```
@@ -116,7 +132,7 @@ def trial_targetcolor(targetcolor, canvas1, canvas2, canvas3):
 ```
 
 
-### Stimuli
+### Creating Stimuli
 To replicate their study, using the expyriment module from python, I presented 12 colored squares appearing on the 12 clock positions of a circle. On 11 of the squares, the following distractor letters were randomly presented: B, A, S, E, P, U, L, T, C, I, O, and F. On a twelfth square, one of two target letters were presented: H or U. Half the targets were 'H', and the other half were 'U'. Stimulus parameters (i.e. square color, circle diameter, clock positions) were taken from Gernot's methods.
 
 ```
@@ -156,7 +172,7 @@ factor_position = shuffledtarg_dist.index((targetletters[ranHU],1))
 For 12 practice trials, and 96 experimental trials, participants were asked to determine which of the two possible target letters were presented using the keyboard as quickly and as accurately as possible. 
 
 
-### Trial Structure
+### Creating Trial Structure
 The trial structure is as follows:
 
 ![Surprise Attention](https://github.com/monicahegde/PCBS-surprise-attention/blob/master/Gernot_Presentation.png?raw=true)
@@ -204,7 +220,7 @@ Here, participants would either have to press the left arrow key, corresponding 
  key, rt = exp.keyboard.wait([constants.K_LEFT, constants.K_RIGHT])
 ```
 
-###Creating an Expyriment Trial
+### Creating Expyriment Trial
 Once I created the stimuli and mapped them to the expyriment canvas, I designed a trial and initially collected the following factors: Target Position, Target Letter, Response, Reaction Time, Target Color and Accuracy(hit: response corresponds to Target Letter; Miss: response does not correspond to Target Letter). 
 
 Note: We measure reaction time because it is used in one of the papers follow up experiment. Knowing this before hand could be interesting in terms of understanding the degree to which participants perform better or worse on the different trials types (conjunction search v. surprise trial v. feature search)
@@ -286,18 +302,21 @@ For each block, using the exp.data.add and trial.get_factor commands, the progra
 exp.data.add([trial.get_factor("Target Position"),trial.get_factor("Target Color"),trial.get_factor("Target Letter"), trial.get_factor("Response"),trial.get_factor("Reaction Time"), trial.get_factor("Block"),trial.get_factor("Accuracy")])
 
 ```
-##Future Directions
+## Future Directions
 
 From this code, participants' results are saved in the data sub-directory folder as an .xpd file. Given more time, these data could be analyzed via the pandas module in python using `pandas.read_csv()` or via R using `read.table`. Furthermore, once data from enough participants has been collected, we can use a generalized linear mixed effects model to see whether there are significant effects of trial type (Conjunction Search, Feature Search) and target placement on reaction time and on accuracy. 
 
 
-##Class Reflection
+## Class Reflection
 Before starting this course, I had rather limited knowledge about experimental python. I had gone to the mois de rentrée beginners course, and the intersemestre R courses, so I knew the very basics of creating loops and 'if' statements. I did take the class AT2, which focused on using the numpy and random module. There, we did a lot of isolated exercises in spyder, using the visualizations of dataframes and matrices. Also, since the class was more focused on the reports rather than the code, I never learned how not to "bricoler" whenever I had a complex problem. 
 
 While the principles of the 'random' module helped me understand how to randomize stimulus presention, before this class, I would not have any idea of how to code an experiment. I would say that this class taught me how to approach a problem in python. Before this class, I had a tendency to get bogged down by the complexity of a problem, but with this course, I learned to approach a larger problem in smaller steps. I also learned how to understand error messages, which I think hindered me before. After this class, I feel more equipped to code by trial and error. Though I am still a beginner, I feel more equipped to learn autonomously than I did before. 
 
-I did, however, find the expyriment documentation pretty difficult to understand at first; at first I did not understand the difference between the backend Xpyriment and expyriment, hence struggled a lot at first. But because I started rather early on on this project, I was able to find solutions slowly but surely, and towards the end, I found it very manageable and enjoyable (when the code worked). You mentioned a strategy of writing down the problem and breaking down the solutions on paper. That, particularly, I found to be incredibly useful.  
+I did, however, find the expyriment documentation pretty difficult to understand at first; at first I did not understand the difference between the backend Xpyriment and expyriment, hence struggled a lot at first. But because I started rather early on on this project, I was able to find solutions slowly but surely, and towards the end, I found it very manageable and enjoyable (when the code worked). You mentioned a strategy of writing down the problem and breaking down the solutions on paper. That, particularly, I found to be incredibly useful. I also learned how to push and pull from github, something which I think will help me out later.
 
 
 I think, for the future, it would be interesting to have a brief overview of pandas and R regarding statistical analyses. I would have liked to analyse the datafiles, but I did not know exactly how to go about this. Also, I personally found that I progressed a lot quicker once I had my project in mind, so for next year I think it could be beneficial to have students pick their project within the first month, and do the shorter exercises before that. The short exercises were a good way to start the course (given that there are many different levels of exercises for different levels of students).  And I definitely found it nice to try coding a problem on my own and then seeing a more clean solution afterwards on slack/github.
 
+## Reference
+
+Horstmann, G. (2002). Evidence for attentional capture by a surprising color singleton in visual search. Psychological science, 13(6), 499-505.
