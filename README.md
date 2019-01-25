@@ -15,7 +15,6 @@ The current project is based on the work of Gernot Horstmann (2002). The study i
     	- [Creating Stimuli](###Stimuli)
     	- [Creating Trial Structure](###Trial-Structure)
     	- [Creating Expyriment Trial](###Creating-Expyriment-Trial)
-    - [Starting Experiment](##starting-experiment)
     - [Experiment](##experiment)
     - [Future Directions](##future-directions)
     - [Class Reflection](##Class-Reflection)
@@ -253,7 +252,7 @@ Once the function collected criteria for these measures, I returned trial as a g
     return trial
 ```
 
-## Starting Experiment
+## Experiment
 I then started the experiment and created the variable names (which create headers for factors in .xpd file). I also defined variables indicating the number of practice and experimental trials.
 
 ```
