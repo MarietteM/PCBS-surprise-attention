@@ -32,7 +32,7 @@ canvas3 = stimuli.Canvas(screensize)
 practiceinstructions = """ For this experiment, you will first see a cross, followed by a display of 12 squares in the form of a clock.
 There will be a letter on each square. Your task is to determine whether there was an "H" or "U" among those letters. 
 You will respond with the left and right keys, marked with "H" and "U" correspondingly.
-We wil now do some practice trials! To begin press the space bar"""
+We wil now do some practice trials before starting the actual experiment! To begin press the space bar"""
 
 expinstructions = """We will now begin the actual experiment. As a reminder:
 
